@@ -10,7 +10,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.stereotype.Repository;
-
+import com.au.proma.model.*;
 @Repository
 public class UserDao {
 
@@ -34,7 +34,7 @@ public class UserDao {
 			}
 		});
 	}
-	public int addUser(UserDTO uobj,String rolename)
+	public int addUser(User uobj,String rolename)
 	{
 		RoleDao rdao=new RoleDao();
 		Integer roleid=rdao.getRoleId(rolename);

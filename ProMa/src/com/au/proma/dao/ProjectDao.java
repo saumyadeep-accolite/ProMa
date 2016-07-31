@@ -1,4 +1,5 @@
 package com.au.proma.dao;
+import com.au.proma.model.*;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -7,6 +8,8 @@ import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowire;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
@@ -15,23 +18,23 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class ProjectDao {
 	@Autowired
-	private JdbcTemplate jdbcTemplate;
+	public JdbcTemplate jdbcTemplate;
 	
 	
 	
-	public ArrayList<ProjectDTO> extractProjectsUnderBU(String buname)
+	public ArrayList<Project> extractProjectsUnderBU(String buname)
 	{
 		String query="select p.clientname,p.projectname,u.username,"+
 "p.resourceworking,p.startdate,p.enddate from dbo.bu as bu,dbo.project as p, dbo.users"+
 "as u where bu.buname='"+buname+ 
 "' and bu.buid=p.buid" +
 "and p.projectmanagerid=u.userid";
-		return jdbcTemplate.query(query, new ResultSetExtractor< ArrayList<ProjectDTO> >() {
+		return jdbcTemplate.query(query, new ResultSetExtractor< ArrayList<Project> >() {
 
-			public ArrayList<ProjectDTO> extractData(ResultSet rs) throws SQLException, DataAccessException {
+			public ArrayList<Project> extractData(ResultSet rs) throws SQLException, DataAccessException {
 				
 				
-				ArrayList<ProjectDTO> temp=new ArrayList<ProjectDTO>();
+				ArrayList<Project> temp=new ArrayList<Project>();
 				while (rs.next()){
 				String clientname=rs.getString("clientname");
 				String projectname=rs.getString("projectname");
@@ -39,7 +42,7 @@ public class ProjectDao {
 				int resourceworking=rs.getInt("resourceworking");
 				Date startdate=rs.getDate("startdate");
 				Date enddate=rs.getDate("enddate");
-				ProjectDTO obj=new ProjectDTO(clientname, projectname, managername, resourceworking, startdate, enddate);
+				Project obj=new Project(clientname, projectname, managername, resourceworking, startdate, enddate);
 				temp.add(obj);
 				}
 				return temp;
@@ -48,7 +51,7 @@ public class ProjectDao {
 	}
 	
 	
-	public int updateProject(ProjectDTO pobj)
+	public int updateProject(Project pobj)
 	{
 		UserDao udao=new UserDao();
 		Integer projectmanagerid =udao.getUserId(pobj.getManagername());
@@ -56,7 +59,7 @@ public class ProjectDao {
 		return jdbcTemplate.update(query);
 	}
 	
-	public int insertProject(ProjectDTO pobj,int buid)
+	public int insertProject(Project pobj,int buid)
 	{
 		UserDao udao=new UserDao();
 		Integer id=udao.getUserId(pobj.getManagername());
@@ -65,7 +68,6 @@ public class ProjectDao {
                        +"','"+pobj.getStartdate().toString()+"','"+pobj.getEnddate()+"')";
 		return jdbcTemplate.update(query);
 	}
-	
 	
 	
 	
