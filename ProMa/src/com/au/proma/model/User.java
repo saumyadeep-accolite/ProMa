@@ -1,11 +1,27 @@
 package com.au.proma.model;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class User {
+	private int userid;
 	private String username;
 	private String userpassword;
 	private String useremail;
-	
-	
+	private Role role;
+
+	public int getUserid() {
+		return userid;
+	}
+	public void setUserid(int userid) {
+		this.userid = userid;
+	}
+	public Role getRole() {
+		return role;
+	}
+	public void setRole(Role role) {
+		this.role = role;
+	}
 	public User() {
 		super();
 	}

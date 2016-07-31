@@ -48,7 +48,9 @@ public class ProjectDao {
 				
 				ArrayList<Project> temp=new ArrayList<Project>();
 				while (rs.next()){
-				String clientname=rs.getString("clientname");
+				Project project;
+					
+				project.getclientname=rs.getString("clientname");
 				String projectname=rs.getString("projectname");
 				String managername=rs.getString("username");
 				int resourceworking=rs.getInt("resourceworking");

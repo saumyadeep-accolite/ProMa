@@ -1,39 +1,31 @@
 package com.au.proma.model;
 
-import java.util.Date;
+import java.sql.Date;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class Project{
-	private String clientname;
+	private int projectid;
+	private Client client;
 	private String projectname;
-	private String managername;
+	private User projectmanager;
 	private int resourceworking;
 	private Date startdate;
 	private Date enddate;
 	private int status;
-	
-	
-	public Project() {
-		super();
+	private BU bu;
+	public int getProjectid() {
+		return projectid;
 	}
-	
-	
-	public Project(String clientname, String projectname, String managername, int resourceworking, Date startdate,
-			Date enddate) {
-		super();
-		this.clientname = clientname;
-		this.projectname = projectname;
-		this.managername = managername;
-		this.resourceworking = resourceworking;
-		this.startdate = startdate;
-		this.enddate = enddate;
+	public void setProjectid(int projectid) {
+		this.projectid = projectid;
 	}
-
-
-	public String getClientname() {
-		return clientname;
+	public Client getClient() {
+		return client;
 	}
-	public void setClientname(String clientname) {
-		this.clientname = clientname;
+	public void setClient(Client client) {
+		this.client = client;
 	}
 	public String getProjectname() {
 		return projectname;
@@ -41,11 +33,11 @@ public class Project{
 	public void setProjectname(String projectname) {
 		this.projectname = projectname;
 	}
-	public String getManagername() {
-		return managername;
+	public User getProjectmanager() {
+		return projectmanager;
 	}
-	public void setManagername(String managername) {
-		this.managername = managername;
+	public void setProjectmanager(User projectmanager) {
+		this.projectmanager = projectmanager;
 	}
 	public int getResourceworking() {
 		return resourceworking;
@@ -71,5 +63,30 @@ public class Project{
 	public void setStatus(int status) {
 		this.status = status;
 	}
+	public BU getBu() {
+		return bu;
+	}
+	public void setBu(BU bu) {
+		this.bu = bu;
+	}
+	public Project(int projectid, Client client, String projectname, User projectmanager, int resourceworking,
+			Date startdate, Date enddate, int status, BU bu) {
+		super();
+		this.projectid = projectid;
+		this.client = client;
+		this.projectname = projectname;
+		this.projectmanager = projectmanager;
+		this.resourceworking = resourceworking;
+		this.startdate = startdate;
+		this.enddate = enddate;
+		this.status = status;
+		this.bu = bu;
+	}
+	public Project() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	
+	
 	
 }

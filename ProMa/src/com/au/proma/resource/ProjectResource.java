@@ -44,10 +44,7 @@ public class ProjectResource {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<User> bleh(){
-		List<User> l = new ArrayList<>();
-		l.add(new User(1,"a"));
-		l.add(new User(2,"b"));
-		return l;
+		return null;
 		
 	}
 }
