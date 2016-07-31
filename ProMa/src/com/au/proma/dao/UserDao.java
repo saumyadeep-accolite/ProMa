@@ -15,12 +15,19 @@ import com.au.proma.model.*;
 public class UserDao {
 
 	@Autowired
-	private JdbcTemplate  jdbctemplate;
+	private JdbcTemplate  jdbcTemplate;
+
 	
+	public JdbcTemplate getJdbcTemplate() {
+		return jdbcTemplate;
+	}
+	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+		this.jdbcTemplate = jdbcTemplate;
+	}
 	public Integer getUserId(String name)
 	{
 		String query ="select userid from dbo.users where username='"+name+"'";
-		return jdbctemplate.query(query, new ResultSetExtractor< Integer>() {
+		return jdbcTemplate.query(query, new ResultSetExtractor< Integer>() {
 
 			public Integer extractData(ResultSet rs) throws SQLException, DataAccessException {
 				
@@ -40,7 +47,7 @@ public class UserDao {
 		Integer roleid=rdao.getRoleId(rolename);
 		String query="insert into users(username,userpassword,useremail,userroleid)"+
 						"values('"+uobj.getUsername()+"','"+uobj.getUserpassword()+"','"+uobj.getUseremail()+"','"+roleid+"')";
-		return jdbctemplate.update(query);
+		return jdbcTemplate.update(query);
 	}
 	
 	

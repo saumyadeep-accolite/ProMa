@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowire;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -22,6 +24,16 @@ public class ProjectDao {
 	
 	
 	
+	public JdbcTemplate getJdbcTemplate() {
+		return jdbcTemplate;
+	}
+
+
+	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+		this.jdbcTemplate = jdbcTemplate;
+	}
+
+
 	public ArrayList<Project> extractProjectsUnderBU(String buname)
 	{
 		String query="select p.clientname,p.projectname,u.username,"+
@@ -69,6 +81,23 @@ public class ProjectDao {
 		return jdbcTemplate.update(query);
 	}
 	
+	public List<Project> getAllProjects(){
+		
+		String sql="select * from dbo.Project";
+		
+		return jdbcTemplate.query(sql, new RowMapper<Project>(){
+
+			@Override
+			public Project mapRow(ResultSet arg0, int arg1) throws SQLException {
+				Project p = new Project();
+				p.setClientname(arg0.getString("clientname"));
+				p.setProjectname(arg0.getString("projectname"));
+				return p;
+			}
+			
+		});
+		
+	}
 	
 	
 }

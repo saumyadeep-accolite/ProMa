@@ -13,12 +13,20 @@ import org.springframework.stereotype.Repository;
 public class RoleDao {
 
 	@Autowired
-	private JdbcTemplate jdbctemplate;
+	private JdbcTemplate jdbcTemplate;
 	
+	public JdbcTemplate getJdbcTemplate() {
+		return jdbcTemplate;
+	}
+
+	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+		this.jdbcTemplate = jdbcTemplate;
+	}
+
 	Integer getRoleId(String rolename)
 	{
 		String query ="select roleid from dbo.role where rolename='"+rolename+"'";
-		return jdbctemplate.query(query, new ResultSetExtractor< Integer>() {
+		return jdbcTemplate.query(query, new ResultSetExtractor< Integer>() {
 
 			public Integer extractData(ResultSet rs) throws SQLException, DataAccessException {
 				
