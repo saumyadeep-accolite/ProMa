@@ -34,13 +34,13 @@ public class ProjectDao {
 	}
 
 
-	public ArrayList<Project> extractProjectsUnderBU(String buname)
+	public ArrayList<Project> extractProjectsUnderBU(BU bu)
 	{
-		String query="select p.clientname,p.projectname,u.username,"+
-"p.resourceworking,p.startdate,p.enddate from dbo.bu as bu,dbo.project as p, dbo.users"+
-"as u where bu.buname='"+buname+ 
-"' and bu.buid=p.buid" +
-"and p.projectmanagerid=u.userid";
+		String query="select c.clientname,p.projectname,u.username,"+
+"p.resourceworking,p.startdate,p.enddate from dbo.bu as bu,dbo.project as p,dbo.client as c, dbo.users"+
+" as u where bu.buid='"+bu.getBuid()+ 
+"' and bu.buid=p.buid " +
+"and p.projectmanagerid=u.userid and c.clientid=p.clientid ";
 		return jdbcTemplate.query(query, new ResultSetExtractor< ArrayList<Project> >() {
 
 			public ArrayList<Project> extractData(ResultSet rs) throws SQLException, DataAccessException {
@@ -48,16 +48,21 @@ public class ProjectDao {
 				
 				ArrayList<Project> temp=new ArrayList<Project>();
 				while (rs.next()){
-				Project project;
-					
-				project.getclientname=rs.getString("clientname");
-				String projectname=rs.getString("projectname");
-				String managername=rs.getString("username");
-				int resourceworking=rs.getInt("resourceworking");
-				Date startdate=rs.getDate("startdate");
-				Date enddate=rs.getDate("enddate");
-				Project obj=new Project(clientname, projectname, managername, resourceworking, startdate, enddate);
-				temp.add(obj);
+				Project project=new Project();
+				Client client=new Client();
+				User user=new User();
+				BU bu=new BU();
+				client.setClientname(rs.getString("clientname"));
+				project.setProjectname(rs.getString("projectname"));
+				user.setUsername(rs.getString("username"));
+				project.setResourceworking(rs.getInt("resourceworking"));
+				project.setStartdate(rs.getDate("startdate"));
+				project.setEnddate(rs.getDate("enddate"));
+				project.setClient(client);
+				project.setBu(bu);
+				project.setProjectmanager(user);
+				//Project obj=new Project(clientname, projectname, managername, resourceworking, startdate, enddate);
+				temp.add(project);
 				}
 				return temp;
 			}
@@ -67,39 +72,35 @@ public class ProjectDao {
 	
 	public int updateProject(Project pobj)
 	{
-		UserDao udao=new UserDao();
-		Integer projectmanagerid =udao.getUserId(pobj.getManagername());
-		String query="update dbo.project set projectmanagerid='"+projectmanagerid.toString()+"' , resourceworking='"+pobj.getResourceworking()+"' ,startdate='"+ pobj.getStartdate().toString()+"' ,enddate='"+pobj.getEnddate().toString()+"' where projectname='"+pobj.getProjectname()+"'and clientname='"+pobj.getClientname()+"'";
+		String query="update dbo.project set projectmanagerid='"+ pobj.getProjectid()+"' , resourceworking='"+pobj.getResourceworking()+"' ,startdate='"+ pobj.getStartdate().toString()+"' ,enddate='"+pobj.getEnddate().toString()+"' where projectname='"+pobj.getProjectname()+"'and clientname='"+pobj.getClient().getClientname()+"'";
 		return jdbcTemplate.update(query);
 	}
 	
-	public int insertProject(Project pobj,int buid)
+	public int insertProject(Project pobj)
 	{
-		UserDao udao=new UserDao();
-		Integer id=udao.getUserId(pobj.getManagername());
-		String query="insert into dbo.Project(projectname,clientname,projectmanagerid,buid,resourceworking,startdate,enddate)"+
-                       "values('"+pobj.getProjectname()+"','"+pobj.getClientname()+"','"+id.toString()+"','"+buid+"','"+pobj.getResourceworking()
-                       +"','"+pobj.getStartdate().toString()+"','"+pobj.getEnddate()+"')";
+		String query="insert into dbo.Project(projectname,clientid,projectmanagerid,buid,resourceworking,startdate,enddate)"+
+                       "values('"+pobj.getProjectname()+"','"+pobj.getClient().getClientid()+"','"+pobj.getProjectmanager().getUserid()+"','"+pobj.getBu().getBuid()+"','"+pobj.getResourceworking()
+                       +"','"+pobj.getStartdate().toString()+"','"+pobj.getEnddate().toString()+"')";
 		return jdbcTemplate.update(query);
 	}
 	
-	public List<Project> getAllProjects(){
-		
-		String sql="select * from dbo.Project";
-		
-		return jdbcTemplate.query(sql, new RowMapper<Project>(){
-
-			@Override
-			public Project mapRow(ResultSet arg0, int arg1) throws SQLException {
-				Project p = new Project();
-				p.setClientname(arg0.getString("clientname"));
-				p.setProjectname(arg0.getString("projectname"));
-				return p;
-			}
-			
-		});
-		
-	}
+//	public List<Project> getAllProjects(){
+//		
+//		String sql="select * from dbo.Project";
+//		
+//		return jdbcTemplate.query(sql, new RowMapper<Project>(){
+//
+//			@Override
+//			public Project mapRow(ResultSet arg0, int arg1) throws SQLException {
+//				Project p = new Project();
+//				p.setClientname(arg0.getString("clientname"));
+//				p.setProjectname(arg0.getString("projectname"));
+//				return p;
+//			}
+//			
+//		});
+//		
+//	}
 	
 	
 }

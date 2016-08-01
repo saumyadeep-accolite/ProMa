@@ -31,21 +31,21 @@ public class BuDao {
 
 
 
-	public Integer getBuId(String buname)
-	{
-		String query ="select buid from dbo.bu where buname='"+buname+"'";
-		return jdbcTemplate.query(query, new ResultSetExtractor< Integer>() {
-
-			public Integer extractData(ResultSet rs) throws SQLException, DataAccessException {
-				
-				
-				Integer temp=0;
-				while (rs.next()){
-				temp=rs.getInt("buid");
-				
-				}
-				return temp;
-			}
-		});
-	}
+//	public Integer getBuId(String buname)
+//	{
+//		String query ="select buid from dbo.bu where buname='"+buname+"'";
+//		return jdbcTemplate.query(query, new ResultSetExtractor< Integer>() {
+//
+//			public Integer extractData(ResultSet rs) throws SQLException, DataAccessException {
+//				
+//				
+//				Integer temp=0;
+//				while (rs.next()){
+//				temp=rs.getInt("buid");
+//				
+//				}
+//				return temp;
+//			}
+//		});
+//	}
 }
