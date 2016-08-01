@@ -23,23 +23,23 @@ public class RoleDao {
 		this.jdbcTemplate = jdbcTemplate;
 	}
 
-	Integer getRoleId(String rolename)
-	{
-		String query ="select roleid from dbo.role where rolename='"+rolename+"'";
-		return jdbcTemplate.query(query, new ResultSetExtractor< Integer>() {
-
-			public Integer extractData(ResultSet rs) throws SQLException, DataAccessException {
-				
-				
-				Integer temp=0;
-				while (rs.next()){
-				temp=rs.getInt("roleid");
-				
-				}
-				return temp;
-			}
-		});
-	}
+//	Integer getRoleId(String rolename)
+//	{
+//		String query ="select roleid from dbo.role where rolename='"+rolename+"'";
+//		return jdbcTemplate.query(query, new ResultSetExtractor< Integer>() {
+//
+//			public Integer extractData(ResultSet rs) throws SQLException, DataAccessException {
+//				
+//				
+//				Integer temp=0;
+//				while (rs.next()){
+//				temp=rs.getInt("roleid");
+//				
+//				}
+//				return temp;
+//			}
+//		});
+//	}
 	
 	
 }
