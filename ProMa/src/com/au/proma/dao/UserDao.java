@@ -24,29 +24,28 @@ public class UserDao {
 	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
 		this.jdbcTemplate = jdbcTemplate;
 	}
-	public Integer getUserId(String name)
+//	public Integer getUserId(String name)
+//	{
+//		String query ="select userid from dbo.users where username='"+name+"'";
+//		return jdbcTemplate.query(query, new ResultSetExtractor< Integer>() {
+//
+//			public Integer extractData(ResultSet rs) throws SQLException, DataAccessException {
+//				
+//				
+//				Integer temp=0;
+//				while (rs.next()){
+//				temp=rs.getInt("userid");
+//				
+//				}
+//				return temp;
+//			}
+//		});
+//	}
+	public int addUser(User uobj)
 	{
-		String query ="select userid from dbo.users where username='"+name+"'";
-		return jdbcTemplate.query(query, new ResultSetExtractor< Integer>() {
-
-			public Integer extractData(ResultSet rs) throws SQLException, DataAccessException {
-				
-				
-				Integer temp=0;
-				while (rs.next()){
-				temp=rs.getInt("userid");
-				
-				}
-				return temp;
-			}
-		});
-	}
-	public int addUser(User uobj,String rolename)
-	{
-		RoleDao rdao=new RoleDao();
-		Integer roleid=rdao.getRoleId(rolename);
+		
 		String query="insert into users(username,userpassword,useremail,userroleid)"+
-						"values('"+uobj.getUsername()+"','"+uobj.getUserpassword()+"','"+uobj.getUseremail()+"','"+roleid+"')";
+						"values('"+uobj.getUsername()+"','"+uobj.getUserpassword()+"','"+uobj.getUseremail()+"','"+uobj.getRole().getRoleid()+"')";
 		return jdbcTemplate.update(query);
 	}
 	
